@@ -9,7 +9,7 @@ stages:
       size: 333757
     - path: src/config/params.yaml
       hash: md5
-      md5: 6f88e0e6a58ed890aa17a0caf61989e7
+      md5: 19496c5830e07e8b137329791203b472
       size: 315
     - path: src/data/data_split.py
       hash: md5
@@ -69,7 +69,7 @@ stages:
       size: 5491
     - path: src/config/params.yaml
       hash: md5
-      md5: 6f88e0e6a58ed890aa17a0caf61989e7
+      md5: 19496c5830e07e8b137329791203b472
       size: 315
     - path: src/models/grid_search.py
       hash: md5
@@ -78,8 +78,8 @@ stages:
     outs:
     - path: models/best_params.pkl
       hash: md5
-      md5: 9e193036b9e19143ed25747be777f139
-      size: 113
+      md5: 8a562aec413ffb16b7bf0d3be9576a69
+      size: 112
   training:
     cmd: uv run python -m src.models.training
     deps:
@@ -93,11 +93,11 @@ stages:
       size: 5491
     - path: models/best_params.pkl
       hash: md5
-      md5: 9e193036b9e19143ed25747be777f139
-      size: 113
+      md5: 8a562aec413ffb16b7bf0d3be9576a69
+      size: 112
     - path: src/config/params.yaml
       hash: md5
-      md5: 6f88e0e6a58ed890aa17a0caf61989e7
+      md5: 19496c5830e07e8b137329791203b472
       size: 315
     - path: src/models/training.py
       hash: md5
@@ -106,8 +106,8 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 3033b73f204570ec89d3b243322003ea
-      size: 7051601
+      md5: 011f34618544c94d072579f55ace95ed
+      size: 788705
   evaluate:
     cmd: uv run python -m src.models.evaluate
     deps:
@@ -125,8 +125,8 @@ stages:
       size: 5491
     - path: models/model.pkl
       hash: md5
-      md5: 3033b73f204570ec89d3b243322003ea
-      size: 7051601
+      md5: 011f34618544c94d072579f55ace95ed
+      size: 788705
     - path: src/models/evaluate.py
       hash: md5
       md5: 0119df69df51f567f1b3e8a287dcbce8
@@ -134,5 +134,5 @@ stages:
     outs:
     - path: metrics/predictions.csv
       hash: md5
-      md5: cd34cf8fe97d2d74c1d4ba12503afaa4
-      size: 13274
+      md5: e5ee8f61d60975502b90ffcc2d3a4f94
+      size: 13265

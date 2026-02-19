@@ -11,7 +11,7 @@ gridsearch:
   min_samples_split: [2, 5]
   min_samples_leaf: [1, 2, 4]
   max_features: ["auto", "sqrt"]
-  cv: 10
+  cv: 11
   scoring: "mean_squared_error"
   n_jobs: -1
   verbose: 1
