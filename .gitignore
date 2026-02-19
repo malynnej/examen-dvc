@@ -1,2 +1,6 @@
 /venv
 /clean_data.csv
+/data
+/metrics/*.pkl
+/metrics/*.csv
+/models/*.pkl
