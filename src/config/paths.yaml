@@ -1,0 +1,11 @@
+data:
+  bucket_raw: "https://datascientest-mlops.s3.eu-west-1.amazonaws.com/mlops_dvc_fr/raw.csv"
+  raw: "data/raw_data"
+  csv: "raw.csv"
+  preprocessed: "data/processed_data"
+
+models:
+  models_dir: "models"
+
+results:
+  results_dir: "metrics"

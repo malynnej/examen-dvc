@@ -1,0 +1,10 @@
+{
+  "best_score": -0.14072886033920032,
+  "best_params": {
+    "max_depth": 10,
+    "max_features": "sqrt",
+    "min_samples_leaf": 4,
+    "min_samples_split": 2,
+    "n_estimators": 400
+  }
+}

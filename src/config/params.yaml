@@ -1,0 +1,18 @@
+data:
+  target: "silica_concentrate"
+  cutoff_quantile: 0.8
+
+general:
+  random_state: 42
+
+gridsearch:
+  n_estimators: [200, 400]
+  max_depth: [5, 10, null]
+  min_samples_split: [2, 5]
+  min_samples_leaf: [1, 2, 4]
+  max_features: ["auto", "sqrt"]
+  cv: 10
+  scoring: "mean_squared_error"
+  n_jobs: -1
+  verbose: 1
+
