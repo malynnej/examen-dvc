@@ -1,0 +1,138 @@
+schema: '2.0'
+stages:
+  split:
+    cmd: uv run python -m src.data.data_split
+    deps:
+    - path: data/raw_data/raw.csv
+      hash: md5
+      md5: 617b56af2992376d5c3e91ad80823898
+      size: 333757
+    - path: src/config/params.yaml
+      hash: md5
+      md5: 6f88e0e6a58ed890aa17a0caf61989e7
+      size: 315
+    - path: src/data/data_split.py
+      hash: md5
+      md5: fa4879fa402f70d25c0f14eb1d9b17cd
+      size: 2256
+    outs:
+    - path: data/processed_data/X_test.parquet
+      hash: md5
+      md5: d3cc853507b84d3addffd645ed82bc86
+      size: 32814
+    - path: data/processed_data/X_train.parquet
+      hash: md5
+      md5: da28745a3fd55daf086f0161c0bdabe3
+      size: 114627
+    - path: data/processed_data/y_test.parquet
+      hash: md5
+      md5: 61c57d9dbfbd46e34032be246297168a
+      size: 2758
+    - path: data/processed_data/y_train.parquet
+      hash: md5
+      md5: a4832a382db74a7cdf82c3771120592c
+      size: 5491
+  normalize:
+    cmd: uv run python -m src.data.normalize
+    deps:
+    - path: data/processed_data/X_test.parquet
+      hash: md5
+      md5: d3cc853507b84d3addffd645ed82bc86
+      size: 32814
+    - path: data/processed_data/X_train.parquet
+      hash: md5
+      md5: da28745a3fd55daf086f0161c0bdabe3
+      size: 114627
+    - path: src/data/normalize.py
+      hash: md5
+      md5: 0ec56081a4df27d1a34008359bb53b07
+      size: 1784
+    outs:
+    - path: data/processed_data/X_test_scaled.parquet
+      hash: md5
+      md5: 7950bf58010353bff84206a31eb79ec2
+      size: 32854
+    - path: data/processed_data/X_train_scaled.parquet
+      hash: md5
+      md5: b249df1fa3f10010efc739fb244e2681
+      size: 114757
+  gridsearch:
+    cmd: uv run python -m src.models.grid_search
+    deps:
+    - path: data/processed_data/X_train_scaled.parquet
+      hash: md5
+      md5: b249df1fa3f10010efc739fb244e2681
+      size: 114757
+    - path: data/processed_data/y_train.parquet
+      hash: md5
+      md5: a4832a382db74a7cdf82c3771120592c
+      size: 5491
+    - path: src/config/params.yaml
+      hash: md5
+      md5: 6f88e0e6a58ed890aa17a0caf61989e7
+      size: 315
+    - path: src/models/grid_search.py
+      hash: md5
+      md5: d7943f3b70be8722fe880e6b59e37ec7
+      size: 2524
+    outs:
+    - path: models/best_params.pkl
+      hash: md5
+      md5: 9e193036b9e19143ed25747be777f139
+      size: 113
+  training:
+    cmd: uv run python -m src.models.training
+    deps:
+    - path: data/processed_data/X_train_scaled.parquet
+      hash: md5
+      md5: b249df1fa3f10010efc739fb244e2681
+      size: 114757
+    - path: data/processed_data/y_train.parquet
+      hash: md5
+      md5: a4832a382db74a7cdf82c3771120592c
+      size: 5491
+    - path: models/best_params.pkl
+      hash: md5
+      md5: 9e193036b9e19143ed25747be777f139
+      size: 113
+    - path: src/config/params.yaml
+      hash: md5
+      md5: 6f88e0e6a58ed890aa17a0caf61989e7
+      size: 315
+    - path: src/models/training.py
+      hash: md5
+      md5: cf387e0c739b58ed4e2cdd3a6b193679
+      size: 1386
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 3033b73f204570ec89d3b243322003ea
+      size: 7051601
+  evaluate:
+    cmd: uv run python -m src.models.evaluate
+    deps:
+    - path: data/processed_data/X_test_scaled.parquet
+      hash: md5
+      md5: 7950bf58010353bff84206a31eb79ec2
+      size: 32854
+    - path: data/processed_data/y_test.parquet
+      hash: md5
+      md5: 61c57d9dbfbd46e34032be246297168a
+      size: 2758
+    - path: data/processed_data/y_train.parquet
+      hash: md5
+      md5: a4832a382db74a7cdf82c3771120592c
+      size: 5491
+    - path: models/model.pkl
+      hash: md5
+      md5: 3033b73f204570ec89d3b243322003ea
+      size: 7051601
+    - path: src/models/evaluate.py
+      hash: md5
+      md5: 0119df69df51f567f1b3e8a287dcbce8
+      size: 1913
+    outs:
+    - path: metrics/predictions.csv
+      hash: md5
+      md5: cd34cf8fe97d2d74c1d4ba12503afaa4
+      size: 13274

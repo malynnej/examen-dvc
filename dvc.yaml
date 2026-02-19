@@ -4,5 +4,47 @@ stages:
     deps:
     - data/raw_data/raw.csv
     - src/data/data_split.py
+    - src/config/params.yaml
     outs:
-    - data/processed_data
+    - data/processed_data/X_train.parquet
+    - data/processed_data/X_test.parquet
+    - data/processed_data/y_train.parquet
+    - data/processed_data/y_test.parquet
+  normalize:
+    cmd: uv run python -m src.data.normalize
+    deps:
+    - data/processed_data/X_test.parquet
+    - data/processed_data/X_train.parquet
+    - src/data/normalize.py
+    outs:
+    - data/processed_data/X_test_scaled.parquet
+    - data/processed_data/X_train_scaled.parquet
+  gridsearch:
+    cmd: uv run python -m src.models.grid_search
+    deps:
+    - data/processed_data/y_train.parquet
+    - data/processed_data/X_train_scaled.parquet
+    - src/models/grid_search.py
+    - src/config/params.yaml
+    outs:
+    - models/best_params.pkl
+  training:
+    cmd: uv run python -m src.models.training
+    deps:
+    - data/processed_data/y_train.parquet
+    - data/processed_data/X_train_scaled.parquet
+    - models/best_params.pkl
+    - src/models/training.py
+    - src/config/params.yaml
+    outs:
+    - models/model.pkl
+  evaluate:
+    cmd: uv run python -m src.models.evaluate
+    deps:
+    - data/processed_data/y_test.parquet
+    - data/processed_data/y_train.parquet
+    - data/processed_data/X_test_scaled.parquet
+    - models/model.pkl
+    - src/models/evaluate.py
+    outs:
+    - metrics/predictions.csv
